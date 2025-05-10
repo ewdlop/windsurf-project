@@ -1,13 +1,17 @@
 import React from 'react';
-import { Typography, Container, Box, Grid } from '@mui/material';
-import { People as PeopleIcon, Work as WorkIcon, EmojiObjects as EmojiObjectsIcon } from '@mui/icons-material';
+import { 
+  Typography, 
+  Box, 
+  Grid, 
+  Stack
+} from '@mui/material';
+import { 
+  People as PeopleIcon, 
+  Work as WorkIcon, 
+  EmojiObjects as EmojiObjectsIcon 
+} from '@mui/icons-material';
 import styled from '@emotion/styled';
-
-const SectionBox = styled(Box)`
-  background-color: ${props => props.bgcolor || 'transparent'};
-  padding: 64px 0;
-  text-align: center;
-`;
+import PageLayout from '../components/PageLayout';
 
 const IconBox = styled(Box)`
   display: flex;
@@ -36,50 +40,59 @@ const About: React.FC = () => {
   ];
 
   return (
-    <>
-      <SectionBox bgcolor="#f4f4f4">
-        <Container maxWidth="md">
-          <Typography variant="h2" component="h1" gutterBottom>
-            About Our Company
-          </Typography>
-          <Typography variant="h5" component="p" color="textSecondary" paragraph>
-            We are a technology company committed to pushing the boundaries of innovation and creating meaningful solutions.
-          </Typography>
-        </Container>
-      </SectionBox>
+    <PageLayout 
+      title="About Our Company" 
+      alignItems="center" 
+      textAlign="center"
+    >
+      <Typography variant="h6" component="p" color="textSecondary" paragraph>
+        We are a technology company committed to pushing the boundaries of innovation and creating meaningful solutions.
+      </Typography>
 
-      <Container maxWidth="lg" sx={{ py: 8 }}>
-        <Grid container spacing={4}>
-          {companyValues.map((value, index) => (
-            <Grid item xs={12} md={4} key={index}>
-              <Box textAlign="center" p={3}>
-                <IconBox>
-                  {value.icon}
-                </IconBox>
-                <Typography variant="h6" component="h3" gutterBottom>
-                  {value.title}
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                  {value.description}
-                </Typography>
-              </Box>
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
+      <Box sx={{ 
+        display: 'grid', 
+        gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, 
+        gap: 4, 
+        mt: 4 
+      }}>
+        {companyValues.map((value, index) => (
+          <Box key={index}>
+            <Box textAlign="center" p={3}>
+              <IconBox>
+                {value.icon}
+              </IconBox>
+              <Typography variant="h6" component="h3" gutterBottom>
+                {value.title}
+              </Typography>
+              <Typography variant="body2" color="textSecondary">
+                {value.description}
+              </Typography>
+            </Box>
+          </Box>
+        ))}
+      </Box>
 
-      <SectionBox bgcolor="#e0e0e0">
-        <Container maxWidth="md">
-          <Typography variant="h4" component="h2" gutterBottom>
-            Our Story
-          </Typography>
-          <Typography variant="body1" paragraph>
-            Founded in 2020, our company started with a simple mission: to make technology more accessible and powerful for developers worldwide. 
-            We believe in the power of innovation and continuous learning.
-          </Typography>
-        </Container>
-      </SectionBox>
-    </>
+      <Stack 
+        spacing={3} 
+        alignItems="center" 
+        textAlign="center" 
+        width="100%" 
+        mt={4}
+        sx={{ 
+          backgroundColor: '#f4f4f4', 
+          py: 4, 
+          borderRadius: 2 
+        }}
+      >
+        <Typography variant="h4" component="h2" gutterBottom>
+          Our Story
+        </Typography>
+        <Typography variant="body1" paragraph color="textSecondary" sx={{ maxWidth: 600 }}>
+          Founded in 2020, our company started with a simple mission: to make technology more accessible and powerful for developers worldwide. 
+          We believe in the power of innovation and continuous learning.
+        </Typography>
+      </Stack>
+    </PageLayout>
   );
 };
 
