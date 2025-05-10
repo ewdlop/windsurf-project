@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { 
   Container, 
   Typography, 
@@ -10,12 +9,14 @@ import {
   ListItemText, 
   Checkbox, 
   IconButton, 
-  Box 
+  Paper,
+  Stack
 } from '@mui/material';
 import { Delete as DeleteIcon } from '@mui/icons-material';
 import type { RootState, AppDispatch } from '../store';
 import type { Todo } from '../store/todosSlice';
 import { addTodo, toggleTodo, removeTodo } from '../store/todosSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Todos: React.FC = () => {
   const [inputText, setInputText] = useState('');
@@ -30,69 +31,77 @@ const Todos: React.FC = () => {
   };
 
   return (
-    <Container maxWidth="md" sx={{ py: 4 }}>
-      <Typography variant="h4" component="h1" gutterBottom>
-        Todo List
-      </Typography>
+    <Container maxWidth="sm" sx={{ py: 4 }}>
+      <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
+        <Stack spacing={3}>
+          <Typography variant="h4" component="h1" align="center" gutterBottom>
+            Todo List
+          </Typography>
 
-      {/* Todo Input */}
-      <Box display="flex" mb={3}>
-        <TextField
-          fullWidth
-          variant="outlined"
-          label="Add a new todo"
-          value={inputText}
-          onChange={(e) => setInputText(e.target.value)}
-          onKeyPress={(e) => e.key === 'Enter' && handleAddTodo()}
-          sx={{ mr: 2 }}
-        />
-        <Button 
-          variant="contained" 
-          color="primary" 
-          onClick={handleAddTodo}
-        >
-          Add
-        </Button>
-      </Box>
-
-      {/* Todo List */}
-      <List>
-        {todos.map((todo: Todo) => (
-          <ListItem 
-            key={todo.id} 
-            secondaryAction={
-              <IconButton 
-                edge="end" 
-                aria-label="delete"
-                onClick={() => dispatch(removeTodo(todo.id as string))}
-              >
-                <DeleteIcon />
-              </IconButton>
-            }
-            disablePadding
-          >
-            <Checkbox
-              checked={todo.completed}
-              onChange={() => dispatch(toggleTodo(todo.id))}
+          {/* Todo Input */}
+          <Stack direction="row" spacing={2}>
+            <TextField
+              fullWidth
+              variant="outlined"
+              label="Add a new todo"
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && handleAddTodo()}
             />
-            <ListItemText 
-              primary={todo.text} 
-              sx={{ 
-                textDecoration: todo.completed ? 'line-through' : 'none',
-                opacity: todo.completed ? 0.5 : 1
-              }}
-            />
-          </ListItem>
-        ))}
-      </List>
+            <Button 
+              variant="contained" 
+              color="primary" 
+              onClick={handleAddTodo}
+              sx={{ minWidth: 100 }}
+            >
+              Add
+            </Button>
+          </Stack>
 
-      {/* Todo Stats */}
-      <Box mt={3} textAlign="center">
-        <Typography variant="body2" color="textSecondary">
-          Total Todos: {todos.length} | 
-          Completed: {todos.filter(todo => todo.completed).length}
-        </Typography>
-      </Box>
+          {/* Todo List */}
+          {todos.length > 0 ? (
+            <List>
+              {todos.map((todo: Todo) => (
+                <ListItem 
+                  key={todo.id} 
+                  secondaryAction={
+                    <IconButton 
+                      edge="end" 
+                      aria-label="delete"
+                      onClick={() => dispatch(removeTodo(todo.id))}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  }
+                  disablePadding
+                >
+                  <Checkbox
+                    checked={todo.completed}
+                    onChange={() => dispatch(toggleTodo(todo.id))}
+                  />
+                  <ListItemText 
+                    primary={todo.text} 
+                    sx={{ 
+                      textDecoration: todo.completed ? 'line-through' : 'none',
+                      opacity: todo.completed ? 0.5 : 1
+                    }}
+                  />
+                </ListItem>
+              ))}
+            </List>
+          ) : (
+            <Typography variant="body2" color="textSecondary" align="center">
+              No todos yet. Add a new todo!
+            </Typography>
+          )}
+
+          {/* Todo Stats */}
+          <Typography variant="body2" color="textSecondary" align="center">
+            Total Todos: {todos.length} | 
+            Completed: {todos.filter(todo => todo.completed).length}
+          </Typography>
+        </Stack>
+      </Paper>
     </Container>
   );
 };
