@@ -35,6 +35,10 @@ const Todos: React.FC = () => {
       alignItems="center" 
       textAlign="center"
     >
+      <Typography variant="h6" component="p" color="textSecondary" paragraph>
+        Manage your tasks efficiently and stay organized!
+      </Typography>
+
       {/* Todo Input */}
       <Stack direction="row" spacing={2} sx={{ width: '100%', mb: 3 }}>
         <TextField
@@ -47,17 +51,21 @@ const Todos: React.FC = () => {
         />
         <Button 
           variant="contained" 
-          color="primary" 
+          color="primary"
           onClick={handleAddTodo}
-          sx={{ minWidth: 100 }}
+          sx={{ minWidth: 120 }}
         >
           Add
         </Button>
       </Stack>
 
       {/* Todo List */}
-      {todos.length > 0 ? (
-        <List sx={{ width: '100%' }}>
+      {todos.length === 0 ? (
+        <Typography variant="body1" color="textSecondary" sx={{ mt: 3 }}>
+          No todos yet. Add a task to get started!
+        </Typography>
+      ) : (
+        <List sx={{ width: '100%', bgcolor: 'background.paper', borderRadius: 2 }}>
           {todos.map((todo: Todo) => (
             <ListItem 
               key={todo.id} 
@@ -66,6 +74,7 @@ const Todos: React.FC = () => {
                   edge="end" 
                   aria-label="delete"
                   onClick={() => dispatch(removeTodo(todo.id))}
+                  color="error"
                 >
                   <DeleteIcon />
                 </IconButton>
@@ -75,21 +84,18 @@ const Todos: React.FC = () => {
               <Checkbox
                 checked={todo.completed}
                 onChange={() => dispatch(toggleTodo(todo.id))}
+                color="primary"
               />
               <ListItemText 
                 primary={todo.text} 
                 sx={{ 
                   textDecoration: todo.completed ? 'line-through' : 'none',
-                  opacity: todo.completed ? 0.5 : 1
-                }}
+                  color: todo.completed ? 'text.secondary' : 'inherit'
+                }} 
               />
             </ListItem>
           ))}
         </List>
-      ) : (
-        <Typography variant="body2" color="textSecondary" align="center">
-          No todos yet. Add a new todo!
-        </Typography>
       )}
 
       {/* Todo Stats */}

@@ -4,7 +4,7 @@ import {
   Typography, 
   Paper, 
   Stack, 
-  StackProps 
+  type StackProps 
 } from '@mui/material';
 
 interface PageLayoutProps extends StackProps {
